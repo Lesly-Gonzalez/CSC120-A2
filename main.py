@@ -3,77 +3,63 @@ from calendar import c
 from typing import Dict, Union
 
 # Import the functions we wrote in procedural_resale_shop.py
-from procedural_resale_shop import buy, update_price, sell, print_inventory, refurbish
+#from procedural_resale_shop import buy, update_price, sell, print_inventory, refurbish #Remember to comment out this line
+from oo_resale_shop import ResaleShop
+from computer import Computer
 
-""" This helper function takes in a bunch of information about a computer,
-    and packages it up into a python dictionary to make it easier to store
-
-    Note: because python is dynamically typed, you may not be used to seeing 
-    explicit data types (str, int, etc.) listed in a python function. We're 
-    going to go the extra step, because when we get to Java it'll be required!
-"""
-def create_computer(description: str,
-                    processor_type: str,
-                    hard_drive_capacity: int,
-                    memory: int,
-                    operating_system: str,
-                    year_made: int,
-                    price: int):
-    return {'description': description,
-            'processor_type': processor_type,
-            'hard_drive_capacity': hard_drive_capacity,
-            'memory': memory,
-            'operating_system': operating_system,
-            'year_made': year_made,
-            'price': price
-    }
 
 def main():
-    
-    # First, let's make a computer
-    computer = create_computer(
-        "Mac Pro (Late 2013)",
-        "3.5 GHc 6-Core Intel Xeon E5",
-        1024, 64,
-        "macOS Big Sur", 2013, 1500
-    )
 
-    # Print a little banner
-    print("-" * 21)
-    print("COMPUTER RESALE STORE")
-    print("-" * 21)
+# MY CODE
+#____________________________________________________________________
 
-    # Add it to the resale store's inventory
-    print("Buying", computer["description"])
+    # Create a new computer using the create.computer function from the class "Computer"
+    new_computer = Computer.create_computer( "Mac Pro (Late 2013)",
+              "3.5 GHc 6-Core Intel Xeon E5",
+               1024, 64, "macOS Big Sur", 2013, 1500) 
+
+
+    # Add the new computer to the resale store's inventory
+    print("Buying", new_computer["description"])
     print("Adding to inventory...")
-    computer_id = buy(computer)
+    theShop = ResaleShop()
+    computer_id = theShop.buy(new_computer) 
     print("Done.\n")
 
     # Make sure it worked by checking inventory
     print("Checking inventory...")
-    print_inventory()
+    inventory = ResaleShop.print_inventory(theShop)
+    print(inventory)
     print("Done.\n")
 
-    # Now, let's refurbish it
+    #Now, let's refurbish it
     new_OS = "MacOS Monterey"
     print("Refurbishing Item ID:", computer_id, ", updating OS to", new_OS)
     print("Updating inventory...")
-    refurbish(computer_id, new_OS)
+    theShop.refurbish(computer_id, new_OS) #'Computer' object is not subscriptable
     print("Done.\n")
 
     # Make sure it worked by checking inventory
     print("Checking inventory...")
-    print_inventory()
+    new_inventory = ResaleShop.print_inventory(theShop) #create new_inventory varible to access the inventory with the updates version of the computer
+    print(new_inventory)
+    #print(inventory)
     print("Done.\n")
-    
-    # Now, let's sell it!
+
+    #Now, let's sell it!
     print("Selling Item ID:", computer_id)
-    sell(computer_id)
-    
+    theShop.sell(computer_id)
+
     # Make sure it worked by checking inventory
     print("Checking inventory...")
-    print_inventory()
+    theShop.print_inventory()
     print("Done.\n")
 
+    #Testing to see whether the error message in the refurbish function works
+    theShop.refurbish(computer_id)
+
+#______________________________________________________________
+
+    
 # Calls the main() function when this file is run
 if __name__ == "__main__": main()

@@ -25,7 +25,7 @@ Takes in a Dict containing all the information about a computer,
 adds it to the inventory, returns the assigned item_id
 """
 def buy(computer: Dict[str, Union[str, int, bool]]):
-    global itemID
+    global itemID # LG: why is this global????
     itemID += 1 # increment itemID
     inventory[itemID] = computer
     return itemID
